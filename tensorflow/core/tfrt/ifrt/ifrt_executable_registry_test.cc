@@ -85,6 +85,7 @@ CreateIfrtServingExecutable(mlir::MLIRContext& context, int64_t program_id) {
 
   IfrtLoadedVariableRegistry ifrt_loaded_variable_registry;
   IfrtRestoreTensorRegistry ifrt_restore_tensor_registry;
+  H2DTransferExecutorFactory h2d_transfer_executor_factory;
   std::unique_ptr<tfrt::ConcurrentWorkQueue> work_queue =
       tfrt::CreateMultiThreadedWorkQueue(
           /*num_threads=*/4, /*num_blocking_threads=*/4);
@@ -98,8 +99,8 @@ CreateIfrtServingExecutable(mlir::MLIRContext& context, int64_t program_id) {
       tensorflow::IdentityShapeRepresentationFn(),
       /*ifrt_serving_core_selector=*/nullptr,
       /*compilation_environment_proto=*/nullptr,
-      /*tf_to_hlo_compiler=*/nullptr,
-      /*persistent_compilation_cache=*/nullptr);
+      /*tf_to_hlo_compiler=*/nullptr, /*persistent_compilation_cache=*/nullptr,
+      &h2d_transfer_executor_factory);
 }
 
 TEST(IfrtExecutableRegistry, Basic) {

@@ -302,6 +302,7 @@ cc_library(
         ":ifrt_persistent_compilation_cache",
         ":ifrt_restore_tensor_registry",
         ":ifrt_serving_core_selector",
+        ":sharding_utils",
         "//tensorflow/compiler/mlir/tfrt/transforms/ifrt:tf2hlo",
         "//tensorflow/compiler/tf2xla:xla_helpers",
         "//tensorflow/core:core_cpu_base",
