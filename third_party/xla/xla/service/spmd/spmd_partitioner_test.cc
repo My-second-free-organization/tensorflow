@@ -532,10 +532,10 @@ ENTRY entry {
   EXPECT_NE(all_gather, nullptr);
 
   // Verify all-gather instruction contains ReplicaGroupV2.
-  EXPECT_TRUE(all_gather->device_list().version() ==
+  EXPECT_TRUE(all_gather->device_list()->version() ==
               CollectiveDeviceListVersion::kIota);
   EXPECT_EQ(all_gather->device_list(),
-            IotaReplicaGroupList(
+            std::make_shared<IotaReplicaGroupList>(
                 /*num_replica_groups=*/1, /*num_devices_per_group=*/4,
                 /*reshape_dims=*/{4}, /*transpose_perm=*/{0}));
 }
@@ -598,7 +598,7 @@ ENTRY entry {
   EXPECT_EQ(all_to_all->replica_groups()[0].replica_ids_size(), 8);
   if (GetParam() == ShardingFormatPicker::ShardingType::kBestEffortV2) {
     EXPECT_EQ(all_to_all->device_list(),
-              IotaReplicaGroupList(
+              std::make_shared<IotaReplicaGroupList>(
                   /*num_replica_groups=*/1, /*num_devices_per_group=*/8,
                   /*reshape_dims=*/{4, 2}, /*transpose_perm=*/{1, 0}));
   } else {
@@ -2008,10 +2008,10 @@ ENTRY entry {
             module->entry_computation()->instructions().end());
 
   // Verify all-reduce instruction contains ReplicaGroupV2.
-  EXPECT_EQ((*all_reduce_instruction)->device_list().version(),
+  EXPECT_EQ((*all_reduce_instruction)->device_list()->version(),
             CollectiveDeviceListVersion::kIota);
   EXPECT_EQ((*all_reduce_instruction)->device_list(),
-            IotaReplicaGroupList(
+            std::make_shared<IotaReplicaGroupList>(
                 /*num_replica_groups=*/1, /*num_devices_per_group=*/8,
                 /*reshape_dims=*/{8}, /*transpose_perm=*/{0}));
 }
@@ -12151,10 +12151,10 @@ ENTRY %module {
   EXPECT_TRUE(all_to_all != nullptr);
   if (GetParam() ==
       test_only::ShardingFormatPicker::ShardingType::kBestEffortV2) {
-    EXPECT_EQ(all_to_all->device_list().version(),
+    EXPECT_EQ(all_to_all->device_list()->version(),
               CollectiveDeviceListVersion::kIota);
     EXPECT_EQ(all_to_all->device_list(),
-              IotaReplicaGroupList(
+              std::make_shared<IotaReplicaGroupList>(
                   /*num_replica_groups=*/4, /*num_devices_per_group=*/2,
                   /*reshape_dims=*/{2, 2, 2}, /*transpose_perm=*/{0, 2, 1}));
   } else {

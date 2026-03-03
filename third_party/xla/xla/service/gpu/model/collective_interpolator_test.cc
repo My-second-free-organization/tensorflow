@@ -148,14 +148,16 @@ class CollectiveInterpolationTest : public TestWithParam<ParametrizedTestCase> {
     IotaReplicaGroupList iota(1, 1);
     switch (comm) {
       case GPUCommunicationType::SINGLE_PARTITION:
-        iota = IotaReplicaGroupList(num_hosts, kNumGpusPerHost);
+        iota =
+            std::make_shared<IotaReplicaGroupList>(num_hosts, kNumGpusPerHost);
         break;
       case GPUCommunicationType::MULTI_HOST_WORLD_LEVEL:
-        iota = IotaReplicaGroupList(1, num_hosts * kNumGpusPerHost);
+        iota = std::make_shared<IotaReplicaGroupList>(
+            1, num_hosts * kNumGpusPerHost);
         break;
       case GPUCommunicationType::MULTI_HOST_NON_WORLD_LEVEL:
-        iota = IotaReplicaGroupList(kNumGpusPerHost, num_hosts,
-                                    {num_hosts, kNumGpusPerHost}, {1, 0});
+        iota = std::make_shared<IotaReplicaGroupList>(
+            kNumGpusPerHost, num_hosts, {num_hosts, kNumGpusPerHost}, {1, 0});
         break;
       default:
         LOG(FATAL) << "Unsupported comm option.";
