@@ -451,6 +451,26 @@ inline absl::Status DeadlineExceededWithPayloads(
 }
 
 // DataLoss
+template <typename Arg1>
+[[deprecated("Use absl::DataLossError(arg1) instead.")]] ABSL_REFACTOR_INLINE
+    absl::Status
+    DataLoss(Arg1 arg1) {
+  return absl::DataLossError(arg1);
+}
+template <typename Arg1, typename Arg2>
+[[deprecated(
+    "Use absl::DataLossError(arg1, arg2) instead.")]] ABSL_REFACTOR_INLINE
+    absl::Status
+    DataLoss(Arg1 arg1, Arg2 arg2) {
+  return absl::DataLossError(absl::StrCat(arg1, arg2));
+}
+template <typename Arg1, typename Arg2, typename Arg3>
+[[deprecated(
+    "Use absl::DataLossError(arg1, arg2, arg3) instead.")]] ABSL_REFACTOR_INLINE
+    absl::Status
+    DataLoss(Arg1 arg1, Arg2 arg2, Arg3 arg3) {
+  return absl::DataLossError(absl::StrCat(arg1, arg2, arg3));
+}
 template <typename... Args>
 ABSL_DEPRECATED("Use absl::DataLossError() instead.")
 absl::Status DataLoss(Args... args) {
